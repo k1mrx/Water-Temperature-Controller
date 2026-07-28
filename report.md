@@ -4,7 +4,7 @@
 *Department of Electrical Engineering*
 
 <!-- 🖼️ IMAGE: Amirkabir University Logo -->
-![Amirkabir Logo](images/amirkabir_logo.png)
+![Amirkabir Logo](images/Amirkabir_logo.png)
 
 **Authors:**
 * Keyvan Moaveni Nejad 
