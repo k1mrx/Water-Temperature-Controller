@@ -76,11 +76,11 @@ This provides two advantages:
 3. Heat loss to the environment is modeled linearly (Thermal Resistance model $R$): $Q_{loss} = \frac{T(t) - T_{amb}}{R}$
 4. Therefore: 
    ```math
-   C\frac{dT(t)}{dt} = \eta P(t) - \frac{T(t) - T_{amb}}{R}
+    C\frac{dT(t)}{dt} = \eta P(t) - \frac{T(t) - T_{amb}}{R}
    ```
 5. Using $\eta=1$ and $\theta(t) = T(t) - T_{amb}$ (assuming $T_{amb}$ is constant over short intervals, so $\frac{d\theta}{dt} = \frac{dT}{dt}$):
    ```math
-   C\frac{d\theta(t)}{dt} = P(t) - \frac{\theta(t)}{R}
+    C\frac{d\theta(t)}{dt} = P(t) - \frac{\theta(t)}{R}
    ```
 
 ### 2.3 Transfer Function Extraction
