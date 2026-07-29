@@ -74,13 +74,15 @@ This provides two advantages:
 1. The internal energy of the water is modeled with an equivalent heat capacity $C$. The rate of energy change is $\approx C \frac{dT(t)}{dt}$
 2. Let $P(t)$ be the input heater power. Considering efficiency $\eta=1$, the effective input power is $P(t)$.
 3. Heat loss to the environment is modeled linearly (Thermal Resistance model $R$): $Q_{loss} = \frac{T(t) - T_{amb}}{R}$
-4. Therefore: 
+4. Therefore:
+   
    ```math
-         C\frac{dT(t)}{dt} = \eta P(t) - \frac{T(t) - T_{amb}}{R}
+   C\frac{dT(t)}{dt} = \eta P(t) - \frac{T(t) - T_{amb}}{R}
    ```
-5. Using $\eta=1$ and $\theta(t) = T(t) - T_{amb}$ (assuming $T_{amb}$ is constant over short intervals, so $\frac{d\theta}{dt} = \frac{dT}{dt}$):
+6. Using $\eta=1$ and $\theta(t) = T(t) - T_{amb}$ (assuming $T_{amb}$ is constant over short intervals, so $\frac{d\theta}{dt} = \frac{dT}{dt}$):
+   
    ```math
-           C\frac{d\theta(t)}{dt} = P(t) - \frac{\theta(t)}{R}
+   C\frac{d\theta(t)}{dt} = P(t) - \frac{\theta(t)}{R}
    ```
 
 ### 2.3 Transfer Function Extraction
@@ -224,7 +226,8 @@ Internal Model Control (IMC) explicitly incorporates the plant model to cancel p
 
 #### 5.3.1 IMC Controller Design and Equivalent PI
 The IMC controller converts to an equivalent PI controller. Using $K_p = 50$, we derive:
-```mathT_f = 83.72 \Rightarrow T_i = 1674.4 \Rightarrow K_i \approx 0.03
+```math
+T_f = 83.72 \Rightarrow T_i = 1674.4 \Rightarrow K_i \approx 0.03
 ```
 
 <!-- 🖼️ IMAGE: Finding PID parameters with IMC method (Table/Figure 5-4) -->
