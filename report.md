@@ -60,7 +60,9 @@ These assumptions were chosen with an awareness of their limitations, aiming to 
 
 ### 2.1 Defining the Relative Temperature Variable
 To simplify, we define the temperature difference relative to the environment:
-$$ \theta(t) = T(t) - T_{amb} $$
+```math
+\theta(t) = T(t) - T_{amb}
+```
 
 This provides two advantages:
 1. The effect of the environment, which acts as a disturbance, is neatly separated in the model.
@@ -73,16 +75,26 @@ This provides two advantages:
 2. Let $P(t)$ be the input heater power. Considering efficiency $\eta=1$, the effective input power is $P(t)$.
 3. Heat loss to the environment is modeled linearly (Thermal Resistance model $R$): $Q_{loss} = \frac{T(t) - T_{amb}}{R}$
 4. Therefore: 
-   $$ C\frac{dT(t)}{dt} = \eta P(t) - \frac{T(t) - T_{amb}}{R} $$
+   ```math
+    C\frac{dT(t)}{dt} = \eta P(t) - \frac{T(t) - T_{amb}}{R}
+   ```
 5. Using $\eta=1$ and $\theta(t) = T(t) - T_{amb}$ (assuming $T_{amb}$ is constant over short intervals, so $\frac{d\theta}{dt} = \frac{dT}{dt}$):
    $$ C\frac{d\theta(t)}{dt} = P(t) - \frac{\theta(t)}{R} $$
 
 ### 2.3 Transfer Function Extraction
 Taking the Laplace transform (assuming zero initial conditions):
-$$ Cs \Theta(s) = P(s) - \frac{1}{R}\Theta(s) $$
-$$ Cs \Theta(s) + \frac{1}{R}\Theta(s) = P(s) $$
-$$ \Theta(s)(Cs + \frac{1}{R}) = P(s) $$
-$$ \frac{\Theta(s)}{P(s)} = \frac{1}{Cs + \frac{1}{R}} = \frac{R}{RCs + 1} $$
+```math
+Cs \Theta(s) = P(s) - \frac{1}{R}\Theta(s)
+```
+```math
+Cs \Theta(s) + \frac{1}{R}\Theta(s) = P(s)
+```
+```math
+\Theta(s)(Cs + \frac{1}{R}) = P(s) 
+```
+```math
+\frac{\Theta(s)}{P(s)} = \frac{1}{Cs + \frac{1}{R}} = \frac{R}{RCs + 1}
+```
 
 The plant transfer function is:
 $$ G_p(s) = \frac{R}{RCs + 1} $$
@@ -94,7 +106,9 @@ This is a first-order system with a time constant $\tau = RC$. If $R$ or $C$ inc
 ![Control Loop Block Diagram](images/Closed-loop_block_diagram.png)
 
 To control the system temperature and track the setpoint, a PI controller is initially used. The closed-loop transfer function is:
-$$ \frac{\Theta(s)}{\Theta_{set}} = \frac{R(K_p s + K_i)}{RCs^2 + (1 + RK_p)s + RK_i} $$
+```math
+\frac{\Theta(s)}{\Theta_{set}} = \frac{R(K_p s + K_i)}{RCs^2 + (1 + RK_p)s + RK_i}
+```
 
 ---
 
@@ -111,15 +125,24 @@ The controller is implemented on an Arduino microcontroller. Due to the digital 
 
 ### 3.2 NTC Sensor and Resistance-to-Temperature Conversion
 NTC implies resistance drops as temperature rises. The Beta model is used:
-$$ R(T) = R_0 e^{\beta (\frac{1}{T} - \frac{1}{T_0})} $$
+```math
+R(T) = R_0 e^{\beta (\frac{1}{T} - \frac{1}{T_0})}
+```
 Solving for $T$ (in Kelvin):
-$$ T = \frac{1}{\frac{1}{T_0} + (\frac{1}{\beta})\ln(\frac{R_T}{R_0})} $$
+```math
+T = \frac{1}{\frac{1}{T_0} + (\frac{1}{\beta})\ln(\frac{R_T}{R_0})}
+```
 Conversion to Celsius:
-$$ T_c = T - 273.15 $$
+```math
+T_c = T - 273.15
+```
 Voltage Divider relations to calculate $R_{NTC}$:
-$$ V_{out} = V_{cc}\frac{R_{NTC}}{R_{fixed} + R_{NTC}} \Rightarrow R_{NTC} = R_{fixed}\frac{V_{out}}{V_{cc} - V_{out}} $$
+```math
+V_{out} = V_{cc}\frac{R_{NTC}}{R_{fixed} + R_{NTC}} \Rightarrow R_{NTC} = R_{fixed}\frac{V_{out}}{V_{cc} - V_{out}}
+```
 ADC to Voltage:
-$$ V_{out} = \frac{ADC}{1023}V_{cc} $$
+```mathV_{out} = \frac{ADC}{1023}V_{cc}
+```
 
 ### 3.3 Hardware Constraints and SSR Switching Considerations
 To ensure reliable SSR operation and equipment longevity, a minimum on/off time constraint of 250ms is enforced within every 2.5-second time window. This prevents ultra-fast pulsing, maintaining smooth control without damaging hardware.
@@ -131,12 +154,16 @@ To accurately design the controller, parameters cannot rely solely on theoretica
 
 ### 4.1 Calculating C
 Assuming a 1-liter water volume:
-$$ C = mc \Rightarrow C = 1 \times 4186 = 4186 \, (J/K) $$
+```math
+C = mc \Rightarrow C = 1 \times 4186 = 4186 \, (J/K)
+```
 
 ### 4.2 Estimating R
 Thermal resistance $R$ ($^\circ C/W$) represents insulation. 
 Extracting $R$ from the energy balance:
-$$ R = \frac{T - T_{amb}}{P(t) - C\frac{dT}{dt}} $$
+```math
+R = \frac{T - T_{amb}}{P(t) - C\frac{dT}{dt}}
+``` 
 By applying constant power (1500W) and recording temperature every 0.5s, $R$ can be estimated. However, taking the derivative ($\frac{dT}{dt}$) of noisy temperature measurements heavily amplifies the noise.
 
 #### 4.2.2 The Noise Issue
@@ -155,7 +182,9 @@ To solve this, a Savitzky-Golay digital filter was used in Python (`savgol_filte
 * Figure 4-2: Estimation after applying the filter. The average reported value is $R \approx 0.4$.
 
 Plugging the estimated parameters into the plant:
-$$ G_p(s) = \frac{0.4(K_p s + K_i)}{1674.4 s^2 + (1 + 0.4 K_p)s + 0.4 K_i} $$
+```math
+G_p(s) = \frac{0.4(K_p s + K_i)}{1674.4 s^2 + (1 + 0.4 K_p)s + 0.4 K_i}
+```
 
 ---
 
@@ -192,7 +221,8 @@ Internal Model Control (IMC) explicitly incorporates the plant model to cancel p
 
 #### 5.3.1 IMC Controller Design and Equivalent PI
 The IMC controller converts to an equivalent PI controller. Using $K_p = 50$, we derive:
-$$ T_f = 83.72 \Rightarrow T_i = 1674.4 \Rightarrow K_i \approx 0.03 $$
+```mathT_f = 83.72 \Rightarrow T_i = 1674.4 \Rightarrow K_i \approx 0.03
+```
 
 <!-- 🖼️ IMAGE: Finding PID parameters with IMC method (Table/Figure 5-4) -->
 ![IMC PID Parameters Table](images/imc%20parameters%20table.png)
