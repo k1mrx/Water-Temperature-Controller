@@ -143,7 +143,8 @@ Voltage Divider relations to calculate $R_{NTC}$:
 V_{out} = V_{cc}\frac{R_{NTC}}{R_{fixed} + R_{NTC}} \Rightarrow R_{NTC} = R_{fixed}\frac{V_{out}}{V_{cc} - V_{out}}
 ```
 ADC to Voltage:
-```mathV_{out} = \frac{ADC}{1023}V_{cc}
+```math
+V_{out} = \frac{ADC}{1023}V_{cc}
 ```
 
 ### 3.3 Hardware Constraints and SSR Switching Considerations
